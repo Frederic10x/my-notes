@@ -1,0 +1,20 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+}
+
+/* Mobile: ajouter du padding en bas pour la MobileNav */
+@media (max-width: 768px) {
+  .main {
+    padding-bottom: calc(var(--mobile-nav-height) + var(--spacing-md));
+  }
+}

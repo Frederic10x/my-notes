@@ -1,0 +1,84 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-height);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--max-width);
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.logo {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.logo:hover {
+  opacity: 0.9;
+}
+
+.nav {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.navLink {
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-size: var(--font-sm);
+  font-weight: 500;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.navLink:hover {
+  color: var(--color-text);
+  background-color: var(--color-bg-secondary);
+}
+
+.navLink.active {
+  color: var(--color-primary);
+  background-color: var(--color-bg-secondary);
+}
+
+.signOutBtn {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--color-danger);
+  background: transparent;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.signOutBtn:hover {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+/* Mobile: masquer la navigation */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .signOutBtn {
+    padding: var(--spacing-xs);
+    font-size: var(--font-xs);
+  }
+}

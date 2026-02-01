@@ -1,0 +1,31 @@
+.container {
+  padding: var(--spacing-sm);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: var(--spacing-md);
+  }
+}
+
+.card {
+  background-color: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: var(--spacing-lg);
+  }
+}
+
+.title {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-md) 0;
+}

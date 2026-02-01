@@ -1,0 +1,187 @@
+.container {
+  position: relative;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  min-width: 200px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.trigger:hover {
+  border-color: var(--color-primary);
+}
+
+.trigger:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.triggerContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chevron {
+  font-size: 0.625rem;
+  color: var(--color-text-light);
+  transition: transform 0.2s;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 220px;
+  z-index: 100;
+  overflow: hidden;
+  animation: dropdownIn 0.15s ease;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: var(--spacing-sm);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.option:hover {
+  background-color: var(--color-bg-secondary);
+}
+
+.optionActive {
+  background-color: var(--color-bg-secondary);
+}
+
+.option[data-category="todo"]:hover,
+.option[data-category="todo"].optionActive {
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.option[data-category="done"]:hover,
+.option[data-category="done"].optionActive {
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.option[data-category="recurring"]:hover,
+.option[data-category="recurring"].optionActive {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.option[data-category="waiting_followup"]:hover,
+.option[data-category="waiting_followup"].optionActive {
+  background-color: rgba(139, 92, 246, 0.1);
+}
+
+.icon {
+  font-size: 1rem;
+}
+
+.label {
+  flex: 1;
+}
+
+.checkmark {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+/* Expanded mode (for modal) */
+.expandedContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.expandedOption {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: var(--spacing-sm);
+  background: var(--color-bg-secondary);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  text-align: left;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.expandedOption:hover {
+  border-color: var(--color-border);
+}
+
+.expandedOptionActive {
+  border-color: var(--color-primary);
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+.expandedOption[data-category="todo"].expandedOptionActive {
+  border-color: var(--category-todo);
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.expandedOption[data-category="done"].expandedOptionActive {
+  border-color: var(--category-done);
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.expandedOption[data-category="recurring"].expandedOptionActive {
+  border-color: var(--category-recurring);
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.expandedOption[data-category="waiting_followup"].expandedOptionActive {
+  border-color: var(--category-waiting-followup);
+  background-color: rgba(139, 92, 246, 0.1);
+}

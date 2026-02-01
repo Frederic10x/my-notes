@@ -1,0 +1,80 @@
+.container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  gap: var(--spacing-xs);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: var(--spacing-xs) 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font-size: var(--font-sm);
+  color: var(--color-text-light);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.tab:hover {
+  border-color: var(--color-text-light);
+}
+
+.tab.active {
+  color: var(--color-bg);
+  border-color: transparent;
+}
+
+.tab.active[data-category="all"] {
+  background: var(--color-primary);
+}
+
+.tab.active[data-category="todo"] {
+  background: var(--category-todo);
+}
+
+.tab.active[data-category="done"] {
+  background: var(--category-done);
+}
+
+.tab.active[data-category="recurring"] {
+  background: var(--category-recurring);
+}
+
+.tab.active[data-category="waiting_followup"] {
+  background: var(--category-waiting-followup);
+}
+
+.icon {
+  font-size: var(--font-base);
+}
+
+.label {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .tabs {
+    padding: var(--spacing-xs);
+    margin: 0 calc(-1 * var(--spacing-sm));
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+  }
+}

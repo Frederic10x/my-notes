@@ -1,0 +1,199 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.transcriptArea {
+  min-height: 100px;
+  max-height: 300px;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  overflow-y: auto;
+}
+
+.transcriptText {
+  margin: 0;
+  font-size: var(--font-base);
+  line-height: 1.6;
+  color: var(--color-text);
+  white-space: pre-wrap;
+}
+
+.interimText {
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
+.placeholder {
+  margin: 0;
+  font-size: var(--font-base);
+  color: var(--color-text-light);
+  text-align: center;
+  padding: var(--spacing-md) 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+}
+
+.micButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.micButton:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+.micButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.micButton svg {
+  width: 24px;
+  height: 24px;
+}
+
+.micButtonRecording {
+  background-color: var(--color-danger);
+  color: white;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.micButtonRecording:hover:not(:disabled) {
+  background-color: #dc2626;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
+  }
+}
+
+.recordingIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.pulsingDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--color-danger);
+  animation: pulseDot 1s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+.recordingText {
+  font-size: var(--font-sm);
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+.processingIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-warning, #f59e0b);
+  font-size: var(--font-sm);
+}
+
+.processingSpinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  margin: 0;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-sm);
+  color: var(--color-danger);
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.clearButton {
+  align-self: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-sm);
+  color: var(--color-text-light);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+  color: var(--color-text);
+  border-color: var(--color-text-light);
+}
+
+.unsupported {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg);
+  text-align: center;
+  color: var(--color-text-light);
+}
+
+.warningIcon {
+  width: 32px;
+  height: 32px;
+  color: var(--color-warning, #f59e0b);
+}
+
+.unsupported p {
+  margin: 0;
+  font-size: var(--font-sm);
+  line-height: 1.5;
+}
