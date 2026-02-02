@@ -17,8 +17,8 @@ export default function MobileNav() {
         <span className={styles.label}>Dashboard</span>
       </Link>
       <Link
-        href="/dashboard/new"
-        className={`${styles.navItem} ${pathname === "/dashboard/new" ? styles.active : ""}`}
+        href="/note/new"
+        className={`${styles.navItem} ${pathname === "/note/new" ? styles.active : ""}`}
       >
         <span className={styles.icon}>➕</span>
         <span className={styles.label}>Nouvelle note</span>
