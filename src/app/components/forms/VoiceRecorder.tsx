@@ -63,15 +63,21 @@ export default function VoiceRecorder({
     }
   }, []);
 
+  const stopRecording = useCallback(() => {
+    clearSilenceTimeout();
+    if (recognitionRef.current) {
+      setRecordingState("processing");
+      recognitionRef.current.stop();
+    }
+  }, [clearSilenceTimeout]);
+
   const resetSilenceTimeout = useCallback(() => {
     clearSilenceTimeout();
     lastSpeechTimeRef.current = Date.now();
     silenceTimeoutRef.current = setTimeout(() => {
-      if (recognitionRef.current && recordingState === "recording") {
-        stopRecording();
-      }
+      stopRecording();
     }, SILENCE_TIMEOUT);
-  }, [clearSilenceTimeout, recordingState]);
+  }, [clearSilenceTimeout, stopRecording]);
 
   useEffect(() => {
     const SpeechRecognitionAPI =
@@ -109,11 +115,7 @@ export default function VoiceRecorder({
       }
 
       if (finalTranscript) {
-        setTranscript((prev) => {
-          const newTranscript = prev + finalTranscript;
-          onTranscriptChange(newTranscript);
-          return newTranscript;
-        });
+        setTranscript((prev) => prev + finalTranscript);
       }
 
       setInterimTranscript(interim);
@@ -125,20 +127,18 @@ export default function VoiceRecorder({
       switch (event.error) {
         case "not-allowed":
           setError(
-            "Accès au microphone refusé. Veuillez autoriser l'accès dans les paramètres de votre navigateur."
+            "Accès au microphone refusé. Veuillez autoriser l'accès dans les paramètres de votre navigateur.",
           );
           break;
         case "no-speech":
           setError("Aucune parole détectée. Veuillez réessayer.");
           break;
         case "network":
-          setError(
-            "Erreur réseau. Vérifiez votre connexion et réessayez."
-          );
+          setError("Erreur réseau. Vérifiez votre connexion et réessayez.");
           break;
         case "audio-capture":
           setError(
-            "Aucun microphone détecté. Veuillez vérifier votre matériel."
+            "Aucun microphone détecté. Veuillez vérifier votre matériel.",
           );
           break;
         default:
@@ -150,13 +150,11 @@ export default function VoiceRecorder({
 
     recognition.onend = () => {
       clearSilenceTimeout();
-      if (recordingState === "recording") {
-        setRecordingState("processing");
-        setTimeout(() => {
-          setRecordingState("idle");
-          setInterimTranscript("");
-        }, 500);
-      }
+      // Toujours revenir à "idle" après un court délai
+      setTimeout(() => {
+        setRecordingState("idle");
+        setInterimTranscript("");
+      }, 500);
     };
 
     recognitionRef.current = recognition;
@@ -186,16 +184,8 @@ export default function VoiceRecorder({
       recognitionRef.current.start();
     } catch {
       setError(
-        "Impossible d'accéder au microphone. Veuillez vérifier les permissions."
+        "Impossible d'accéder au microphone. Veuillez vérifier les permissions.",
       );
-    }
-  };
-
-  const stopRecording = () => {
-    clearSilenceTimeout();
-    if (recognitionRef.current && recordingState === "recording") {
-      setRecordingState("processing");
-      recognitionRef.current.stop();
     }
   };
 
@@ -282,11 +272,7 @@ export default function VoiceRecorder({
               className={`${styles.micButton} ${styles.micButtonRecording}`}
               aria-label="Arrêter l'enregistrement"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                stroke="none"
-              >
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
                 <rect x="6" y="6" width="12" height="12" rx="2" />
               </svg>
             </button>
