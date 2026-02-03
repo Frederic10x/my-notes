@@ -8,6 +8,13 @@
   box-shadow: var(--shadow-sm);
 }
 
+/* Desktop: masquer le header car on a la sidebar */
+@media (min-width: 769px) {
+  .header {
+    display: none;
+  }
+}
+
 .container {
   display: flex;
   align-items: center;

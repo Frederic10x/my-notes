@@ -41,6 +41,9 @@
   --status-error: #FF3B30;
   --status-info: #007AFF;
 
+  /* Alias pour compatibilité */
+  --color-danger: #FF3B30;
+
   /* ==========================================
      TYPOGRAPHY
      ========================================== */
@@ -58,6 +61,16 @@
   --font-size-2xl: 1.5rem;    /* 24px */
   --font-size-3xl: 2rem;      /* 32px */
   --font-size-4xl: 2.25rem;   /* 36px */
+
+  /* Alias pour compatibilité (sans -size-) */
+  --font-xs: var(--font-size-xs);
+  --font-sm: var(--font-size-sm);
+  --font-base: var(--font-size-base);
+  --font-lg: var(--font-size-lg);
+  --font-xl: var(--font-size-xl);
+  --font-2xl: var(--font-size-2xl);
+  --font-3xl: var(--font-size-3xl);
+  --font-4xl: var(--font-size-4xl);
 
   /* Font Weights */
   --font-weight-normal: 400;

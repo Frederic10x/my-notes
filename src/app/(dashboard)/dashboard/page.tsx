@@ -102,7 +102,6 @@ async function DashboardContent({ searchParams }: DashboardPageProps) {
 export default async function DashboardPage(props: DashboardPageProps) {
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Mes notes</h1>
       <Suspense fallback={<LoadingFallback />}>
         <DashboardContent searchParams={props.searchParams} />
       </Suspense>

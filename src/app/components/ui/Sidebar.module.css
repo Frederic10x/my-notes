@@ -1,0 +1,113 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--color-bg);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-sticky);
+  overflow-y: auto;
+}
+
+.header {
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+}
+
+.logoIcon {
+  font-size: var(--font-size-2xl);
+}
+
+.logoText {
+  color: var(--color-text);
+}
+
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  gap: var(--spacing-xl);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.menuItem:hover {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+}
+
+.menuItem.active {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.menuIcon {
+  font-size: var(--font-size-base);
+  width: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuLabel {
+  flex: 1;
+}
+
+.aiHelperPlaceholder {
+  min-height: 4rem;
+  /* Placeholder vide pour future fonctionnalité AI Helper */
+}
+
+/* Mobile: cacher la sidebar */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+}

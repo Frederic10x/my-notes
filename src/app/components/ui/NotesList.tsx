@@ -107,9 +107,35 @@ export default function NotesList({
 
   return (
     <div className={styles.container}>
+      {/* Desktop: Header avec SearchBar centrée */}
+      <div className={styles.desktopHeader}>
+        <div className={styles.searchWrapper}>
+          <SearchBar value={search} onChange={handleSearchChange} placeholder="Search your notes..." />
+        </div>
+      </div>
+
+      {/* Mobile: Filters */}
       <div className={styles.filters}>
         <SearchBar value={search} onChange={handleSearchChange} />
         <CategoryFilter value={category} onChange={handleCategoryChange} />
+      </div>
+
+      {/* Desktop: Section Title */}
+      <div className={styles.titleSection}>
+        <div className={styles.titleContent}>
+          <h2>Recent Notes</h2>
+          <p>Organized by AI for professionals</p>
+        </div>
+        <div className={styles.titleActions}>
+          <button className={styles.actionButton}>
+            <span>↕</span>
+            Sort
+          </button>
+          <button className={styles.actionButton}>
+            <span>⊞</span>
+            Layout
+          </button>
+        </div>
       </div>
 
       {error && (
