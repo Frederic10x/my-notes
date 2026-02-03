@@ -5,7 +5,9 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { Note, Category, CATEGORY_LABELS, CATEGORY_ICONS } from "@/lib/types/notes";
 import CategoryDropdown from "@/app/components/ui/CategoryDropdown";
-import styles from "./page.module.css";
+import CategoryBadge from "@/app/components/ui/CategoryBadge";
+import SearchBar from "@/app/components/ui/SearchBar";
+import styles from "./note-detail.module.css";
 
 export default function NoteDetailPage() {
   const router = useRouter();
@@ -15,11 +17,14 @@ export default function NoteDetailPage() {
   const [note, setNote] = useState<Note | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState("");
+  const [editedTitle, setEditedTitle] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchNote = useCallback(async () => {
     try {
@@ -44,6 +49,8 @@ export default function NoteDetailPage() {
 
       const data = await response.json();
       setNote(data);
+      setEditedContent(data.content);
+      setEditedTitle(data.title);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Une erreur est survenue");
     } finally {
@@ -54,23 +61,6 @@ export default function NoteDetailPage() {
   useEffect(() => {
     fetchNote();
   }, [fetchNote]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (!target.closest(`.${styles.menuContainer}`)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    if (isMenuOpen) {
-      document.addEventListener("click", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isMenuOpen]);
 
   useEffect(() => {
     if (successMessage) {
@@ -88,8 +78,6 @@ export default function NoteDetailPage() {
 
     // Optimistic update
     setNote({ ...note, category: newCategory });
-    setShowCategoryDropdown(false);
-    setIsMenuOpen(false);
 
     try {
       const response = await fetch(`/api/notes/${noteId}`, {
@@ -135,21 +123,74 @@ export default function NoteDetailPage() {
     }
   };
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    if (!note) return;
+    setEditedContent(note.content);
+    setEditedTitle(note.title);
+    setIsEditing(false);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!note) return;
+
+    setIsSaving(true);
+
+    try {
+      const response = await fetch(`/api/notes/${noteId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: editedContent,
+          title: editedTitle,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la sauvegarde");
+      }
+
+      const updatedNote = await response.json();
+      setNote(updatedNote);
+      setIsEditing(false);
+      setSuccessMessage("Note mise à jour avec succès");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur lors de la sauvegarde");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("fr-FR", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    const now = new Date();
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInHours < 1) {
+      return "il y a moins d'une heure";
+    } else if (diffInHours < 24) {
+      return `il y a ${diffInHours} heure${diffInHours > 1 ? "s" : ""}`;
+    } else if (diffInDays < 7) {
+      return `il y a ${diffInDays} jour${diffInDays > 1 ? "s" : ""}`;
+    } else {
+      return date.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    }
   };
 
   if (isLoading) {
     return (
-      <div className={styles.container}>
+      <div className={styles.pageContainer}>
         <div className={styles.loadingState}>
           <div className={styles.spinner} />
           <p>Chargement...</p>
@@ -160,7 +201,7 @@ export default function NoteDetailPage() {
 
   if (error) {
     return (
-      <div className={styles.container}>
+      <div className={styles.pageContainer}>
         <div className={styles.errorState}>
           <p className={styles.errorMessage}>{error}</p>
           <Link href="/dashboard" className={styles.backButton}>
@@ -176,106 +217,171 @@ export default function NoteDetailPage() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.pageContainer}>
       {successMessage && (
         <div className={styles.toast}>
           {successMessage}
         </div>
       )}
 
-      <header className={styles.header}>
-        <Link href="/dashboard" className={styles.backButton}>
-          ← Retour
-        </Link>
+      {/* Header */}
+      <header className={styles.pageHeader}>
+        <div className={styles.headerLeft}>
+          <Link href="/dashboard" className={styles.logo}>
+            MindNotes AI
+          </Link>
+          <div className={styles.breadcrumb}>
+            <Link href="/dashboard">My Notes</Link>
+            <span className={styles.breadcrumbSeparator}>{">"}</span>
+            <span className={styles.breadcrumbCurrent}>{note.title}</span>
+          </div>
+        </div>
 
-        <div className={styles.menuContainer}>
-          <button
-            className={styles.menuButton}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Menu actions"
-          >
-            ⋮
-          </button>
+        <div className={styles.headerCenter}>
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search notes..."
+          />
+        </div>
 
-          {isMenuOpen && (
-            <div className={styles.menuDropdown}>
-              <button
-                className={styles.menuItem}
-                onClick={() => {
-                  setShowCategoryDropdown(true);
-                  setIsMenuOpen(false);
-                }}
-              >
-                Changer catégorie
-              </button>
-              <button
-                className={`${styles.menuItem} ${styles.menuItemDanger}`}
-                onClick={() => {
-                  setShowDeleteModal(true);
-                  setIsMenuOpen(false);
-                }}
-              >
-                Supprimer
-              </button>
-            </div>
-          )}
+        <div className={styles.headerRight}>
+          <Link href="/dashboard" className={styles.dashboardButton}>
+            Dashboard
+          </Link>
         </div>
       </header>
 
-      <article className={styles.noteContent}>
-        <div className={styles.noteHeader}>
-          <h1 className={styles.title}>{note.title}</h1>
+      {/* Main Content */}
+      <div className={styles.mainContent}>
+        {/* Left Column - Note Content */}
+        <div className={styles.leftColumn}>
+          {/* Category Badge */}
+          <CategoryBadge category={note.category} />
 
-          <div className={styles.meta}>
-            <span
-              className={styles.categoryBadge}
-              data-category={note.category}
-            >
-              {CATEGORY_ICONS[note.category]} {CATEGORY_LABELS[note.category]}
-            </span>
-            <span className={styles.date}>{formatDate(note.created_at)}</span>
-          </div>
-        </div>
-
-        <div className={styles.content}>
-          {note.content.split("\n").map((paragraph, index) => (
-            <p key={index}>{paragraph || "\u00A0"}</p>
-          ))}
-        </div>
-
-        <div className={styles.desktopActions}>
-          <CategoryDropdown
-            currentCategory={note.category}
-            onCategoryChange={handleCategoryChange}
-          />
-          <button
-            className={styles.deleteButton}
-            onClick={() => setShowDeleteModal(true)}
-          >
-            Supprimer la note
-          </button>
-        </div>
-      </article>
-
-      {showCategoryDropdown && (
-        <div className={styles.modalOverlay} onClick={() => setShowCategoryDropdown(false)}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <h2 className={styles.modalTitle}>Changer de catégorie</h2>
-            <CategoryDropdown
-              currentCategory={note.category}
-              onCategoryChange={handleCategoryChange}
-              expanded
+          {/* Title */}
+          {isEditing ? (
+            <input
+              type="text"
+              className={styles.titleInput}
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              placeholder="Titre de la note"
             />
-            <button
-              className={styles.modalCancel}
-              onClick={() => setShowCategoryDropdown(false)}
-            >
-              Annuler
-            </button>
+          ) : (
+            <h1 className={styles.noteTitle}>{note.title}</h1>
+          )}
+
+          {/* Metadata Line */}
+          <p className={styles.metadataLine}>
+            Last edited {formatDate(note.updated_at)}
+          </p>
+
+          {/* Action Buttons */}
+          <div className={styles.actionButtons}>
+            {isEditing ? (
+              <>
+                <button
+                  className={styles.saveButton}
+                  onClick={handleSaveEdit}
+                  disabled={isSaving}
+                >
+                  {isSaving ? "Saving..." : "Save"}
+                </button>
+                <button
+                  className={styles.cancelButton}
+                  onClick={handleCancelEdit}
+                  disabled={isSaving}
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className={styles.editButton}
+                  onClick={handleEditClick}
+                >
+                  Edit Note
+                </button>
+                <button
+                  className={styles.iconButton}
+                  aria-label="Archive note"
+                  title="Archive"
+                >
+                  📁
+                </button>
+                <button
+                  className={styles.iconButton}
+                  onClick={() => setShowDeleteModal(true)}
+                  aria-label="Delete note"
+                  title="Delete"
+                >
+                  🗑️
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Note Content */}
+          <div className={styles.contentCard}>
+            {isEditing ? (
+              <textarea
+                className={styles.contentTextarea}
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+                placeholder="Contenu de la note..."
+              />
+            ) : (
+              <div className={styles.noteContent}>
+                {note.content.split("\n").map((paragraph, index) => (
+                  <p key={index}>{paragraph || "\u00A0"}</p>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      )}
 
+        {/* Right Column - Metadata */}
+        <aside className={styles.rightColumn}>
+          <div className={styles.metadataCard}>
+            <h3 className={styles.metadataTitle}>Note Metadata</h3>
+
+            <div className={styles.metadataSection}>
+              <div className={styles.metadataItem}>
+                <span className={styles.metadataLabel}>Created</span>
+                <span className={styles.metadataValue}>
+                  {new Date(note.created_at).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric"
+                  })}
+                </span>
+              </div>
+
+              <div className={styles.metadataItem}>
+                <span className={styles.metadataLabel}>Owner</span>
+                <span className={styles.metadataValue}>You</span>
+              </div>
+
+              <div className={styles.metadataItem}>
+                <span className={styles.metadataLabel}>Visibility</span>
+                <span className={styles.metadataValue}>Private</span>
+              </div>
+            </div>
+
+            <div className={styles.categorySection}>
+              <label className={styles.categoryLabel}>CATEGORY</label>
+              <CategoryDropdown
+                currentCategory={note.category}
+                onCategoryChange={handleCategoryChange}
+              />
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      {/* Delete Modal */}
       {showDeleteModal && (
         <div className={styles.modalOverlay} onClick={() => !isDeleting && setShowDeleteModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
