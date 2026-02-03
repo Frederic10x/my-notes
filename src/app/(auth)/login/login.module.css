@@ -1,39 +1,90 @@
 .container {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-secondary);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.logoIcon {
+  font-size: var(--font-xl);
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-sm);
-  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-md);
 }
 
 .card {
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
   background-color: var(--color-bg);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
-  padding: var(--spacing-md);
+  padding: var(--spacing-xl);
+  text-align: center;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .card {
     padding: var(--spacing-lg);
   }
 }
 
-.title {
-  font-size: var(--font-2xl);
-  font-weight: 600;
-  text-align: center;
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background-color: #FEF3E8;
+  border-radius: 50%;
   margin-bottom: var(--spacing-md);
+}
+
+.cardIcon {
+  font-size: 32px;
+  color: var(--color-primary);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
   color: var(--color-text);
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-lg);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
+  text-align: left;
 }
 
 .field {
@@ -42,15 +93,47 @@
   gap: var(--spacing-xs);
 }
 
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .label {
-  font-size: var(--font-sm);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text);
+}
+
+.forgotPassword {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.forgotPassword:hover {
+  text-decoration: underline;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 12px;
+  color: var(--color-text-light);
+  font-size: var(--font-lg);
+  pointer-events: none;
 }
 
 .input {
   width: 100%;
   padding: var(--spacing-xs) var(--spacing-sm);
+  padding-left: 40px;
   font-size: var(--font-base);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -66,36 +149,79 @@
 .input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 123, 60, 0.1);
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  font-size: var(--font-lg);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.passwordToggle:hover {
+  color: var(--color-text);
 }
 
 .error {
-  font-size: var(--font-sm);
+  font-size: var(--font-size-sm);
   color: var(--color-danger);
   margin: 0;
   padding: var(--spacing-xs);
   background-color: rgba(239, 68, 68, 0.1);
   border-radius: var(--radius-sm);
+  text-align: center;
 }
 
 .button {
   width: 100%;
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: 12px var(--spacing-md);
   font-size: var(--font-base);
-  font-weight: 500;
+  font-weight: 600;
   color: white;
   background-color: var(--color-primary);
   border: none;
   border-radius: var(--radius-md);
-  transition: background-color 0.2s, opacity 0.2s;
-  margin-top: var(--spacing-xs);
+  transition: opacity 0.2s;
+  cursor: pointer;
 }
 
 .button:hover:not(:disabled) {
-  background-color: #4f46e5;
+  opacity: 0.9;
 }
 
 .button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.footer {
+  padding: var(--spacing-md);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
+  background-color: var(--color-bg-secondary);
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xs);
+}
+
+.footerLink {
+  color: var(--color-text-light);
+  text-decoration: none;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
 }

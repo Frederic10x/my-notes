@@ -10,6 +10,7 @@ export default function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -58,52 +59,93 @@ export default function LoginPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>Connexion</h1>
+      <header className={styles.header}>
+        <div className={styles.logo}>
+          <span className={styles.logoIcon}>✨</span>
+          <span>Notes App</span>
+        </div>
+      </header>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.field}>
-            <label htmlFor="email" className={styles.label}>
-              Email
-            </label>
-            <input
-              ref={emailRef}
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={styles.input}
-              placeholder="votre@email.com"
-              required
-            />
+      <main className={styles.mainContent}>
+        <div className={styles.card}>
+          <div className={styles.iconWrapper}>
+            <span className={styles.cardIcon}>⚡</span>
           </div>
 
-          <div className={styles.field}>
-            <label htmlFor="password" className={styles.label}>
-              Mot de passe
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={styles.input}
-              placeholder="••••••••"
-              required
-            />
-          </div>
+          <h1 className={styles.title}>Welcome back</h1>
+          <p className={styles.subtitle}>Access your AI-powered workspace</p>
 
-          {error && <p className={styles.error}>{error}</p>}
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.field}>
+              <label htmlFor="email" className={styles.label}>
+                Email
+              </label>
+              <div className={styles.inputWrapper}>
+                <span className={styles.inputIcon}>✉</span>
+                <input
+                  ref={emailRef}
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={styles.input}
+                  placeholder="professional@example.com"
+                  required
+                />
+              </div>
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={styles.button}
-          >
-            {loading ? "Connexion en cours..." : "Se connecter"}
-          </button>
-        </form>
-      </div>
+            <div className={styles.field}>
+              <div className={styles.labelRow}>
+                <label htmlFor="password" className={styles.label}>
+                  Password
+                </label>
+                <a href="#" className={styles.forgotPassword}>
+                  Forgot password?
+                </a>
+              </div>
+              <div className={styles.inputWrapper}>
+                <span className={styles.inputIcon}>🔒</span>
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={styles.input}
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={styles.passwordToggle}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? "👁" : "👁"}
+                </button>
+              </div>
+            </div>
+
+            {error && <p className={styles.error}>{error}</p>}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={styles.button}
+            >
+              {loading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
+        </div>
+      </main>
+
+      <footer className={styles.footer}>
+        <p>© 2024 Notes App. Designed for professionals who think fast.</p>
+        <div className={styles.footerLinks}>
+          <a href="#" className={styles.footerLink}>Privacy Policy</a>
+          <a href="#" className={styles.footerLink}>Terms of Service</a>
+        </div>
+      </footer>
     </div>
   );
 }
