@@ -34,10 +34,11 @@
   padding: var(--spacing-lg);
 }
 
-/* Mobile: padding pour bottom nav */
+/* Mobile: réduction du padding car le header est dans le NotesList */
 @media (max-width: 768px) {
   .main {
     padding: var(--spacing-md);
-    padding-bottom: calc(var(--mobile-nav-height) + var(--spacing-md));
+    padding-top: var(--spacing-sm);
+    padding-bottom: 0;
   }
 }

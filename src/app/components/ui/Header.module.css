@@ -1,19 +1,8 @@
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  height: var(--header-height);
-  background-color: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
+  display: none;
 }
 
-/* Desktop: masquer le header car on a la sidebar */
-@media (min-width: 769px) {
-  .header {
-    display: none;
-  }
-}
+/* Header désactivé - remplacé par le header dans NotesList pour mobile et Sidebar pour desktop */
 
 .container {
   display: flex;

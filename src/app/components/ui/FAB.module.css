@@ -1,37 +1,38 @@
 .fab {
-  position: fixed;
-  bottom: var(--spacing-xl);
-  right: var(--spacing-xl);
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-full);
-  background-color: var(--color-primary);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-fab);
-  cursor: pointer;
-  transition: all var(--transition-base);
-  z-index: var(--z-fixed);
-  text-decoration: none;
+  display: none;
 }
 
-.fab:hover {
-  background-color: var(--color-primary-hover);
-  transform: scale(1.1);
-  box-shadow: var(--shadow-xl);
-}
+/* FAB désactivé - intégré dans le MobileNav pour mobile */
 
-.icon {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-normal);
-  line-height: 1;
-}
-
-/* Mobile: position au-dessus de la bottom nav */
-@media (max-width: 768px) {
+@media (min-width: 769px) {
   .fab {
-    bottom: calc(var(--mobile-nav-height) + var(--spacing-md));
+    display: flex;
+    position: fixed;
+    bottom: var(--spacing-xl);
+    right: var(--spacing-xl);
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+    color: white;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-fab);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    z-index: var(--z-fixed);
+    text-decoration: none;
+  }
+
+  .fab:hover {
+    background-color: var(--color-primary-hover);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .icon {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-normal);
+    line-height: 1;
   }
 }

@@ -107,6 +107,21 @@ export default function NotesList({
 
   return (
     <div className={styles.container}>
+      {/* Mobile: Header avec titre */}
+      <div className={styles.mobileHeader}>
+        <div className={styles.mobileHeaderContent}>
+          <div className={styles.logo}>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="4" width="16" height="16" rx="2" fill="#FF6B3D"/>
+              <path d="M9 11h6M9 13h4" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            <span>Notes App</span>
+          </div>
+        </div>
+        <h1 className={styles.mobileTitle}>Your Notes</h1>
+        <p className={styles.mobileSubtitle}>AI-categorized for your productivity</p>
+      </div>
+
       {/* Desktop: Header avec SearchBar centrée */}
       <div className={styles.desktopHeader}>
         <div className={styles.searchWrapper}>
@@ -114,8 +129,13 @@ export default function NotesList({
         </div>
       </div>
 
-      {/* Mobile: Filters */}
-      <div className={styles.filters}>
+      {/* Mobile: Category Filter only */}
+      <div className={styles.mobileFilters}>
+        <CategoryFilter value={category} onChange={handleCategoryChange} />
+      </div>
+
+      {/* Desktop: Filters avec SearchBar */}
+      <div className={styles.desktopFilters}>
         <SearchBar value={search} onChange={handleSearchChange} />
         <CategoryFilter value={category} onChange={handleCategoryChange} />
       </div>

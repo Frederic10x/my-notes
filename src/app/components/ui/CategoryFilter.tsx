@@ -9,11 +9,11 @@ interface CategoryFilterProps {
 }
 
 const categories = [
-  { value: null, label: "Toutes", icon: "📝" },
-  { value: CATEGORIES.TODO, label: CATEGORY_LABELS.todo, icon: CATEGORY_ICONS.todo },
-  { value: CATEGORIES.DONE, label: CATEGORY_LABELS.done, icon: CATEGORY_ICONS.done },
-  { value: CATEGORIES.RECURRING, label: "Cycliques", icon: CATEGORY_ICONS.recurring },
-  { value: CATEGORIES.WAITING_FOLLOWUP, label: "Attente", icon: CATEGORY_ICONS.waiting_followup },
+  { value: null, label: "All", icon: "📝" },
+  { value: CATEGORIES.TODO, label: "Todo", icon: CATEGORY_ICONS.todo },
+  { value: CATEGORIES.DONE, label: "Done", icon: CATEGORY_ICONS.done },
+  { value: CATEGORIES.RECURRING, label: "Recurring", icon: CATEGORY_ICONS.recurring },
+  { value: CATEGORIES.WAITING_FOLLOWUP, label: "Pending", icon: CATEGORY_ICONS.waiting_followup },
 ] as const;
 
 export default function CategoryFilter({ value, onChange }: CategoryFilterProps) {

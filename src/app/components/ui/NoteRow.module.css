@@ -1,25 +1,16 @@
 .row {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  height: 60px;
-  padding: 0 var(--spacing-sm);
+  gap: var(--spacing-md);
+  min-height: 80px;
+  padding: var(--spacing-md);
+  padding-left: calc(var(--spacing-md) + 4px);
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
   text-decoration: none;
   color: inherit;
-  transition: background-color 0.2s ease;
-}
-
-.row:first-child {
-  border-top-left-radius: var(--radius-md);
-  border-top-right-radius: var(--radius-md);
-}
-
-.row:last-child {
-  border-bottom: none;
-  border-bottom-left-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
 }
 
 .row:hover {
@@ -27,55 +18,62 @@
 }
 
 .row:active {
-  background: var(--color-border);
+  background: var(--color-border-light);
 }
 
-.icon {
-  font-size: var(--font-xl);
-  flex-shrink: 0;
+.colorBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.colorBar[data-category="todo"] {
+  background: var(--category-todo);
+}
+
+.colorBar[data-category="done"] {
+  background: var(--category-done);
+}
+
+.colorBar[data-category="recurring"] {
+  background: var(--category-recurring);
+}
+
+.colorBar[data-category="waiting_followup"] {
+  background: var(--category-waiting-followup);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  min-width: 0;
 }
 
 .title {
-  flex: 1;
-  font-size: var(--font-base);
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
   color: var(--color-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 0;
 }
 
-.label {
-  font-size: var(--font-xs);
-  padding: 2px 8px;
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
+.excerpt {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: var(--line-height-normal);
 }
 
-.row[data-category="todo"] .label {
-  background: rgba(245, 158, 11, 0.15);
-  color: var(--category-todo);
-}
-
-.row[data-category="done"] .label {
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--category-done);
-}
-
-.row[data-category="recurring"] .label {
-  background: rgba(59, 130, 246, 0.15);
-  color: var(--category-recurring);
-}
-
-.row[data-category="waiting_followup"] .label {
-  background: rgba(139, 92, 246, 0.15);
-  color: var(--category-waiting-followup);
-}
-
-.date {
-  font-size: var(--font-xs);
-  color: var(--color-text-light);
+.time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
   flex-shrink: 0;
   white-space: nowrap;
 }
